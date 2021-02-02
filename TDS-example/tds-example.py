@@ -28,7 +28,7 @@ plt.figure(figsize=(8, 4))
 librosa.display.waveplot(x, sr=sr)
 plt.title('Waveplot - Male Neutral')
 plt.savefig('Waveplot_MaleNeutral.png')
-tikzplotlib.save('Waveplot_MaleNeutral.tex')
+# tikzplotlib.save('Waveplot_MaleNeutral.tex')
 
 # Create log Mel spectogram
 spectogram = librosa.feature.melspectrogram(y=x, sr=sr,
@@ -52,7 +52,7 @@ plt.figure(figsize=(8, 4))
 librosa.display.waveplot(x, sr=sr)
 plt.title('Waveplot - Male Angry')
 plt.savefig('Waveplot_MaleAngry.png')
-tikzplotlib.save('Waveplot_MaleAngry.tex')
+# tikzplotlib.save('Waveplot_MaleAngry.tex')
 
 
 # Create log Mel spectogram
