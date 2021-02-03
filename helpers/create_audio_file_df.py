@@ -33,7 +33,7 @@ def create_audio_file_df(set_name='RAVDESS', force_new=False) -> pd.DataFrame:
     actor_folders = os.listdir(audio_folder)
     actor_folders.sort()
 
-    # Prepare the data as lists
+    # Prepare data as list
     dictionary_list = []
     # Go through all folders with audio files
     for i in actor_folders:
@@ -48,6 +48,8 @@ def create_audio_file_df(set_name='RAVDESS', force_new=False) -> pd.DataFrame:
             else:
                 gender = "male"
             file_path = audio_folder + i + '/' + f
+
+            # Append new data to the dictionary list
             dictionary_data = {'gender': gender, 'emotion': emotion, 'actor': actor, 'file_path': file_path}
             dictionary_list.append(dictionary_data)
 
