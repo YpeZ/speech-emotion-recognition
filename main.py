@@ -1,5 +1,3 @@
-from utils import *
-from models import *
 from helpers import *
 
 import os
@@ -8,8 +6,10 @@ import librosa
 ### Load dataset
 dataset = create_audio_file_df(set_name='RAVDESS', force_new=True)
 
-### Feature extraction using Mel Spectrogram
+print(dataset.sample(10))
 
+### Feature extraction using Mel Spectrogram
+dataset = extract_features(dataset, force_new=True)
 
 ### Data preprocessing
 
