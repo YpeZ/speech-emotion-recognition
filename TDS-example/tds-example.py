@@ -18,7 +18,7 @@ from tensorflow.keras.layers import Flatten, Dropout, Dense
 from tensorflow.keras.regularizers import l2
 from tensorflow.python.keras.utils.np_utils import to_categorical
 
-from Plots import confusion_plot
+from plotters import confusion_plot
 
 ### Create waveplot and mel spectrogram of neutral male voice
 filename = '../RAVDESS/Audio_Speech_Actors_01-24/Actor_01/03-01-01-01-01-01-01.wav'
