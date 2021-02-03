@@ -9,7 +9,8 @@ dataset = create_audio_file_df(set_name='RAVDESS', force_new=True)
 print(dataset.sample(10))
 
 ### Feature extraction using Mel Spectrogram
-dataset = extract_features(dataset, force_new=True)
+dataset = extract_features(dataset, force_new=False)
+print(dataset.head())
 
 ### Data preprocessing
 
