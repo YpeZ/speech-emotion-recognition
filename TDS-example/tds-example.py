@@ -1,5 +1,13 @@
 # Import libraries
 import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+print(sys.path, end="\n")
+
+dir_path = sys.path[-1]+"/TDS-example/"
+print(dir_path)
 
 import librosa.display
 import matplotlib.pyplot as plt
@@ -21,13 +29,13 @@ from tensorflow.python.keras.utils.np_utils import to_categorical
 from plotters import confusion_plot
 
 ### Create waveplot and mel spectrogram of neutral male voice
-filename = '../RAVDESS/Audio_Speech_Actors_01-24/Actor_01/03-01-01-01-01-01-01.wav'
+filename = 'RAVDESS/Audio_Speech_Actors_01-24/Actor_01/03-01-01-01-01-01-01.wav'
 x, sr = librosa.load(filename)
 
 plt.figure(figsize=(8, 4))
 librosa.display.waveplot(x, sr=sr)
 plt.title('Waveplot - Male Neutral')
-plt.savefig('Waveplot_MaleNeutral.png')
+plt.savefig(dir_path+'Waveplot_MaleNeutral.png')
 # tikzplotlib.save('Waveplot_MaleNeutral.tex')
 
 # Create log Mel spectogram
@@ -38,20 +46,20 @@ spectogram = librosa.power_to_db(spectogram)
 librosa.display.specshow(spectogram, y_axis='mel', fmax=8000, x_axis='time')
 plt.title('Mel Spectogram - Male Neutral')
 plt.colorbar(format='%+2.0f dB')
-plt.savefig('MelSpec_Male_Neutral.png')
+plt.savefig(dir_path+'MelSpec_Male_Neutral.png')
 plt.interactive(False)
 # tikzplotlib.save('melspec_male_neutral.tex')
 plt.clf()
 
 ### Create waveplot and mel spectrogram of male angry voice
-filename = '../RAVDESS/Audio_Speech_Actors_01-24/Actor_01/03-01-05-01-01-01-01.wav'
+filename = 'RAVDESS/Audio_Speech_Actors_01-24/Actor_01/03-01-05-01-01-01-01.wav'
 x, sr = librosa.load(filename)
 
 # Create waveplot
 plt.figure(figsize=(8, 4))
 librosa.display.waveplot(x, sr=sr)
 plt.title('Waveplot - Male Angry')
-plt.savefig('Waveplot_MaleAngry.png')
+plt.savefig(dir_path+'Waveplot_MaleAngry.png')
 # tikzplotlib.save('Waveplot_MaleAngry.tex')
 
 
@@ -62,13 +70,13 @@ spectogram = librosa.power_to_db(spectogram)
 librosa.display.specshow(spectogram, y_axis='mel', fmax=8000, x_axis='time')
 plt.title('Mel Spectogram - Male Angry')
 plt.colorbar(format='%+2.0f dB')
-plt.savefig('MelSpec_Male_Angry.png')
+plt.savefig(dir_path+'MelSpec_Male_Angry.png')
 plt.interactive(False)
 plt.clf()
 
 
 ### Locate audio files
-audio = '../RAVDESS/Audio_Speech_Actors_01-24/'
+audio = 'RAVDESS/Audio_Speech_Actors_01-24/'
 actor_folders = os.listdir(audio)  # list files in audio directory
 actor_folders.sort()
 
@@ -104,7 +112,7 @@ print(audio_df.sample(10))
 print(audio_df.emotion.value_counts())
 
 # Export df to csv
-audio_df.to_csv('Output/audio.csv')
+audio_df.to_csv(dir_path+'Output/audio.csv')
 
 # Iterate over all audio files and extract mean values of the log Mel spectrogram
 mel_spectrogram = []
@@ -147,7 +155,7 @@ dummy_score = dummy_clf.score(X_test, y_test)
 cm = confusion_matrix(y_test, pred)
 
 
-confusion_plot(y_test, pred, name="Dummy Classifier Model")
+confusion_plot(y_test, pred, name=dir_path+"Dummy Classifier Model")
 
 
 clf = tree.DecisionTreeClassifier()
@@ -158,7 +166,7 @@ clf_score = clf.score(X_test, y_test)
 # plot_confusion_matrix(clf, X_test, y_test)
 # plt.savefig('dectree_conf_mat.png')
 
-confusion_plot(y_test, pred, name="Decision Tree Model")
+confusion_plot(y_test, pred, name=dir_path+"Decision Tree Model")
 
 # Normalize the data
 mean = np.mean(X_train, axis=0)
@@ -202,7 +210,7 @@ model.add(Dense(8, activation='softmax'))
 print(model.summary())
 opt = tf.keras.optimizers.Adam(lr=0.0001, decay=1e-6)
 
-checkpoint = ModelCheckpoint('face_detector.h15', monitor='val_loss', mode='min',
+checkpoint = ModelCheckpoint(dir_path+'face_detector.h15', monitor='val_loss', mode='min',
                              save_best_only=True, verbose=1)
 
 # FIT MODEL
@@ -210,8 +218,8 @@ model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy
 model_history = model.fit(X_train, y_train, batch_size=8, epochs=100,
                           validation_data=(X_test, y_test), callbacks=checkpoint)
 
-model.save_weights("best_model_weights.h5")
-model.save('best_model.h5')
+model.save_weights(dir_path+"best_model_weights.h5")
+model.save(dir_path+'best_model.h5')
 print("Saved model to disk")
 
 cnn_score = model.evaluate(X_test, y_test)[1]
@@ -225,7 +233,7 @@ actual = y_test.argmax(axis=1)
 actual = actual.astype(int).flatten()
 actual = (lb.inverse_transform(actual))
 
-confusion_plot(actual, pred, 'CNN Model')
+confusion_plot(actual, pred, dir_path+'CNN Model')
 
 # Compare performance between models
 print(f"Dummy score: '{round(dummy_score, 3)}'")
@@ -240,8 +248,8 @@ plt.title('CNN Model accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
-plt.savefig('Augmented_Model_Accuracy.png')
-tikzplotlib.save('augmented_model_accuracy.tex')
+plt.savefig(dir_path+'Augmented_Model_Accuracy.png')
+tikzplotlib.save(dir_path+'augmented_model_accuracy.tex')
 plt.clf()
 
 # summarize history for loss
@@ -251,6 +259,6 @@ plt.title('CNN Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
-plt.savefig('Augmented_Model_Loss.png')
-tikzplotlib.save('augmented_model_loss.tex')
+plt.savefig(dir_path+'Augmented_Model_Loss.png')
+tikzplotlib.save(dir_path+'augmented_model_loss.tex')
 plt.clf()
