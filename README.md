@@ -6,4 +6,6 @@ Her code is replicated in the file TDS-example/tds-example.py.
 
 This code is being modularized and modified for flexibility. 
 This modularized version is able to create a dataset of metadata of audio files from the RAVDESS dataset and perform a mel spectrogram feature extraction on these audio files.
-The next step is to split the data and create a convolutional neural network (CNN) model.
+
+
+A complete run of this and additional code is found in the file "Optimization/Model optimization.ipynb". This Jupyter Notebook shows blocks of code followed by its corresponding output. This makes it possible to follow the entire workflow of one run of the code from loading the data into the editor to showing output from models and graphs displaying comparisons of different models run.
